@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>F1</title>
+    <style type="text/css">
+      body {
+        width: auto;
+        margin: 0;
+        overflow: hidden;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #333;
+      }
+
+      .dots {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 48px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .dot {
+        display: none;
+        width: 80px;
+        height: 80px;
+        margin: 0 10px;
+        border-radius: 50%;
+        background-color: red;
+      }
+
+      .wasted {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: "Pricedown", sans-serif;
+        font-size: 72px;
+        color: red;
+        display: none;
+      }
+
+      .app,
+      .app2 {
+        max-height: 90vh;
+        width: 48vw;
+        margin: 0.5vw;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app"></div>
+    <div class="app2"></div>
+    <div class="dots"></div>
+    <div class="wasted">Wasted</div>
+
+    <script src="game.js" type="module"></script>
+    <script type="text/javascript">
+      var ready = false;
+
+      var dotsContainer = document.querySelector('.dots');
+      var wastedElement = document.querySelector('.wasted');
+      var dots = [];
+      var showDotInterval = undefined;
+
+      function createDot() {
+        var dot = document.createElement('div');
+        dot.className = 'dot';
+        dotsContainer.appendChild(dot);
+        dots.push(dot);
+      }
+
+      function showDots() {
+        var dotIndex = 0;
+        showDotInterval = setInterval(function () {
+          dots[dotIndex].style.display = 'inline-block';
+          dotIndex++;
+
+          if (dotIndex >= dots.length) {
+            clearInterval(showDotInterval);
+            setTimeout(hideDots, Math.random() * 5000 + 300);
+          }
+        }, 1000);
+      }
+
+      function showWasted(who) {
+        wastedElement.style.display = 'block';
+        wastedElement.textContent = `Wasted: ${who}!`;
+        clearInterval(showDotInterval);
+        hideDots();
+      }
+
+      function hideDots() {
+        for (var i = 0; i < dots.length; i++) {
+          dots[i].style.display = 'none';
+        }
+        ready = true;
+      }
+
+      // Create 5 dots
+      for (var i = 0; i < 5; i++) {
+        createDot();
+      }
+
+      setTimeout(showDots, 1000);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>F1</title>
+    <style type="text/css">
+      body {
+        width: auto;
+        margin: 0;
+        overflow: hidden;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .countdown {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 48px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .white-bar {
+        background-color: white;
+        width: 80%;
+        height: 40px;
+      }
+
+      .checkbox-container {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        pointer-events: none;
+      }
+
+      .checkbox {
+        width: 50px;
+        height: 50px;
+        background-color: lightgray;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .checkbox input[type="checkbox"] {
+        display: none;
+      }
+
+      .checkbox label {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .checkbox input[type="checkbox"]:checked + label {
+        background-color: green;
+      }
+
+      #game {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="white-bar"></div>
+    <div class="countdown">4</div>
+    <div id="timerdisplay"></div>
+    <div class="checkbox-container" id="checkboxes"></div>
+
+    <div id="game"></div>
+
+    <script src="game.js" type="module"></script>
+    <script type="text/javascript">
+      var countdownElement = document.querySelector(".countdown");
+      var countdownValue = 4;
+      var checkboxContainer = document.getElementById("checkboxes");
+      var gameElement = document.getElementById("game");
+      var originalGameWidth = gameElement.style.width;
+      var originalGameHeight = gameElement.style.height;
+
+      function startCountdown() {
+        countdownElement.innerText = countdownValue;
+
+        if (countdownValue > 0) {
+          var checkboxes = createCheckboxes();
+          checkboxContainer.innerHTML = checkboxes;
+
+          countdownValue--;
+          setTimeout(startCountdown, 1000);
+        } else {
+          countdownElement.style.display = "none";
+          checkboxContainer.innerHTML = "";
+
+          gameElement.style.width = originalGameWidth;
+          gameElement.style.height = originalGameHeight;
+        }
+      }
+
+      function createCheckboxes() {
+        var checkboxes = "";
+        for (var i = 0; i < 4; i++) {
+          checkboxes +=
+            '<div class="checkbox">' +
+            '<input type="checkbox" id="checkbox' +
+            i +
+            '">' +
+            '<label for="checkbox' +
+            i +
+            '"></label>' +
+            "</div>";
+        }
+        return checkboxes;
+      }
+
+      startCountdown();
+    </script>
+  </body>
+</html>
